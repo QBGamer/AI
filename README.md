@@ -1,1 +1,6 @@
-# AI
+- Duyệt cây
+- Tích chập ảnh
+- Trò chơi(XO[Alpha Beta] hoặc 8 ô[A*])
+- Chữ số việt tay
+- Yolo
+- Giải thuật di truyển(optional)
