@@ -1,0 +1,23 @@
+# Sử dụng một image Python chính thức làm base image
+FROM python:3.9
+
+# Thiết lập thư mục làm việc trong container
+WORKDIR /app
+
+# Sao chép file yêu cầu vào container
+COPY requirements.txt .
+
+# Cài đặt các thư viện cần thiết
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Cài đặt libgl1-mesa-glx cho xử lý hình ảnh
+RUN apt-get update && apt-get install -y libgl1-mesa-glx
+
+# Sao chép các file còn lại của service dự đoán vào thư mục làm việc
+COPY . .
+
+# Cổng mà Flask app sẽ chạy
+EXPOSE 5000
+
+# Lệnh để chạy khi container được khởi động
+CMD ["python", "predict.py"]
