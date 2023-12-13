@@ -1,0 +1,58 @@
+version: "3.8"
+
+services:
+    db:
+        image: mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: example
+            # MYSQL_DATABASE: dtdm
+        # volumes:
+        #     - mysql_data:/var/lib/mysql
+        deploy:
+            replicas: 1
+        networks:
+            - my-network
+
+    webapp:
+        image: qbgamer/aimodel
+        ports:
+            - "5000:5000"
+        deploy:
+            replicas: 1
+            restart_policy:
+                condition: on-failure
+        networks:
+            - my-network
+        depends_on:
+            - db
+
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        ports:
+            - "8080:80"
+        deploy:
+            replicas: 1
+        networks:
+            - my-network
+        depends_on:
+            - db
+
+    data_api:
+        image: qbgamer/connmodel
+        ports:
+            - "5001:5001"
+        deploy:
+            replicas: 1
+            restart_policy:
+                condition: on-failure
+        networks:
+            - my-network
+        depends_on:
+            - db
+
+networks:
+    my-network:
+        external: true
+
+volumes:
+    mysql_data:
